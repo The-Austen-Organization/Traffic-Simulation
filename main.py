@@ -1,3 +1,9 @@
+"""
+Code practices:
+- Classes will start with capitals while functions will be lowercased.
+- Use __ to signal private variables within classes.
+"""
+
 from global_variables import *
 
     
@@ -23,14 +29,11 @@ from global_variables import *
          # keep center consistent
          self.rect = self.rotated_sprite.get_rect(center=(self.x, self.y))
 '''
-  
-class Road():
-   pass
 
 running = True
 while running:
    screen.fill((14,154,215))
-   dt = clock.tick(60) / 1000  # delta time
+   dt = clock.tick(60) / 1024  # delta time
 
    for event in pygame.event.get():
       if event.type == pygame.QUIT:
@@ -49,14 +52,14 @@ while running:
       screen.blit(item.rotated_sprite, (item.x - item.rotated_sprite.get_width()/2,item.y - item.rotated_sprite.get_height()/2))
       #pygame.draw.rect(screen, (255, 0, 0), (item.x-item.sprite.get_width()/2, item.y-item.sprite.get_height()/2, item.sprite.get_width(), item.sprite.get_height()), 2)
 
-   Stats_left = [
+   stats_left = [
       f"ACCELERATION: {ACCELERATION}",
       f"MAX_SPEED: {MAX_SPEED}",
       f"FRICTION: {FRICTION}",
       f"TURN_SPEED: {TURN_SPEED}",
     ]
-   for i in range(len(Stats_left)):
-      draw_text(screen,Stats_left[i],10,100+22*i, (255, 240, 237))
+   for i in range(len(stats_left)):
+      draw_text(screen,stats_left[i],10,100+22*i, (255, 240, 237))
    
    pygame.display.flip()
 

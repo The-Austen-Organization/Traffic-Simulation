@@ -1,7 +1,7 @@
 from global_variables import *
 
 class Car():
-   def __init__(self,x,y,radius,color):
+   def __init__(self,x: float,y: float, radius: float, color: list) -> NONE:
       self.x = x
       self.y = y
       self.radius = radius
@@ -21,7 +21,7 @@ class Car():
       self.turn_speed = TURN_SPEED
       self.speed = SPEED
 
-   def update(self,delta,keys):
+   def update(self, delta: float, keys: pygame.key.ScancodeWrapper) -> NONE:
       forward = pygame.Vector2(1, 0).rotate(-self.angle)
 
       # --- acceleration / braking ---
