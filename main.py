@@ -1,30 +1,5 @@
-import pygame
-import math
-import random
-from car import *
+from global_variables import *
 
-pygame.init()
-pygame.display.set_caption("BolaGame")
-width = 1280
-height = 720
-screen = pygame.display.set_mode((width, height), pygame.SCALED, vsync=1)
-clock = pygame.time.Clock()
-# Load sprites
-font = pygame.font.SysFont("Fonts/PressStart2P-Regular.ttf", 30)
-
-
-RED =   [249,62,62]
-GREY = [60,60,60]
-
-ACCELERATION = 300
-MAX_SPEED = 250
-FRICTION = 200
-TURN_SPEED = 120
-SPEED = 0
-
-def draw_text(surface, text, x, y, color=(255, 255, 255)):
-    debug_surface = font.render(str(text), True, color)
-    surface.blit(debug_surface, (x, y))
     
 ''' Spaceship code
    def update(self,delta,mouse):
@@ -51,9 +26,6 @@ def draw_text(surface, text, x, y, color=(255, 255, 255)):
   
 class Road():
    pass
-Cars = []
-for i in range(1000):
-   Cars.append(Car(2*(i+1),400,30,RED))
 
 running = True
 while running:
@@ -68,8 +40,9 @@ while running:
 
    keys = pygame.key.get_pressed()
    for car in Cars:
-      car.update(dt,keys)
-   background = pygame.image.load(f"TrafficSim/sprites/road.jpg").convert_alpha()
+        car.update(dt,keys)
+
+   background = pygame.image.load(f"/Users/baldwinhuang/Library/CloudStorage/ProtonDrive-huangbaldwin@proton.me-folder/Traffic-Simulation/sprites/road.jpg").convert_alpha()
    background = pygame.transform.scale(background, (background.get_width() * 1.1, background.get_height() * 1.1))
    screen.blit(background, (width/2 - background.get_width()/2,height/2 - background.get_height()/2))
    for item in Cars:

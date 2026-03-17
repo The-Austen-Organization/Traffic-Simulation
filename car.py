@@ -1,3 +1,5 @@
+from global_variables import *
+
 class Car():
    def __init__(self,x,y,radius,color):
       self.x = x
@@ -9,7 +11,7 @@ class Car():
       self.acc = pygame.Vector2(-1,-1)
       self.end_color = color
       self.random = random.randint(1,5)
-      self.sprite = pygame.image.load(f"TrafficSim/sprites/car{self.random}.png").convert_alpha()
+      self.sprite = pygame.image.load(f"/Users/baldwinhuang/Library/CloudStorage/ProtonDrive-huangbaldwin@proton.me-folder/Traffic-Simulation/sprites/car{self.random}.png").convert_alpha()
       self.sprite = pygame.transform.scale(self.sprite, (self.sprite.get_width() / 4, self.sprite.get_height() / 4))
       self.rect = self.sprite.get_rect(center=(self.x, self.y))
       self.pos = pygame.Vector2(self.x,self.y)
