@@ -43,7 +43,7 @@ while running:
 
    keys = pygame.key.get_pressed()
    for car in Cars:
-        car.update(dt,keys)
+        car.update(dt, [Checkpoint(0, 0)])
 
    background = pygame.image.load(f"/Users/baldwinhuang/Library/CloudStorage/ProtonDrive-huangbaldwin@proton.me-folder/Traffic-Simulation/sprites/road.jpg").convert_alpha()
    background = pygame.transform.scale(background, (background.get_width() * 1.1, background.get_height() * 1.1))

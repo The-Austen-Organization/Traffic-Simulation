@@ -1,13 +1,17 @@
 import pygame
 import math
 import random
+from road import *
 
-RED = [249,62,62]
-GREY = [60,60,60]
+class Vector:
+    """
+    This is gonna be our own in house implementation of a vector because I don't wanna learn pygame's.
+    """
+    pass
 
 ACCELERATION = 300
 MAX_SPEED = 250
-FRICTION = 200
+FRICTION = 100
 TURN_SPEED = 120
 SPEED = 0
 
@@ -26,4 +30,4 @@ def draw_text(surface, text, x, y, color=(255, 255, 255)):
 from car import *
 
 Cars = list()
-Cars.append(Car(600, 350, 20, RED))
+Cars.append(Car(600, 350, 20))

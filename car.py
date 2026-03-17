@@ -1,11 +1,10 @@
 from global_variables import *
 
 class Car():
-   def __init__(self,x: float,y: float, radius: float, color: list) -> NONE:
+   def __init__(self,x: float,y: float, radius: float) -> NONE:
       self.x = x
       self.y = y
       self.radius = radius
-      self.color = color
       self.angle = random.uniform(0, 2 * math.pi)
       self.vel = pygame.Vector2(math.cos(self.angle)*2,math.sin(self.angle)*2)
       self.acc = pygame.Vector2(-1,-1)
@@ -21,7 +20,7 @@ class Car():
       self.turn_speed = TURN_SPEED
       self.speed = SPEED
 
-   def update(self, delta: float, keys: pygame.key.ScancodeWrapper) -> NONE:
+   def update(self, delta: float, path: list(Checkpoint)) -> NONE:
       forward = pygame.Vector2(1, 0).rotate(-self.angle)
 
       # --- acceleration / braking ---
