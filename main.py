@@ -24,7 +24,7 @@ while running:
     for car in Cars:
         car.update(dt)
 
-    background = pygame.image.load(f"/Users/baldwinhuang/Library/CloudStorage/ProtonDrive-huangbaldwin@proton.me-folder/Traffic-Simulation/sprites/road.jpg").convert_alpha()
+    background = pygame.image.load(f"sprites/road.jpg").convert_alpha()
     background = pygame.transform.scale(background, (background.get_width() * 1.1, background.get_height() * 1.1))
     screen.blit(background, (width/2 - background.get_width()/2,height/2 - background.get_height()/2))
     for item in Cars:

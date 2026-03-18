@@ -7,7 +7,7 @@ class Car():
         self.Y = y 
         self.angle = random.uniform(0, 2 * math.pi)
         self.random = random.randint(1,5)
-        self.sprite = pygame.image.load(f"/Users/baldwinhuang/Library/CloudStorage/ProtonDrive-huangbaldwin@proton.me-folder/Traffic-Simulation/sprites/car{self.random}.png").convert_alpha()
+        self.sprite = pygame.image.load(f"sprites/car{self.random}.png").convert_alpha()
         self.sprite = pygame.transform.scale(self.sprite, (self.sprite.get_width() / 4, self.sprite.get_height() / 4))
         self.rect = self.sprite.get_rect(center=(self.X, self.Y))
         self.rotated_sprite = pygame.transform.rotate(self.sprite, self.angle)
