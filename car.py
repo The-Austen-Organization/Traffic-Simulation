@@ -27,9 +27,10 @@ class Car():
             self.acceleration = pygame.Vector2(0, 0)
             return
 
-        current_checkpoint = self.path[0];
+        current_checkpoint = self.path[0]
 
         if self.rect.collidepoint(current_checkpoint.x, current_checkpoint.y):
+            self.rect = self.sprite.get_rect(center=(self.pos.x, self.pos.y))
             self.path.popleft()
             return
 
