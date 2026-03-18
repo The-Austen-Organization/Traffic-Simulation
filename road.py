@@ -2,8 +2,8 @@ from global_variables import *
 
 class Checkpoint():
     def __init__(self, x: float, y: float) -> None:
-        self.x = x;
-        self.y = y;
+        self.x = x
+        self.y = y
     def distance_from(self, x: float, y: float) -> float:
         """
         This finds the eucledian distance between any point and this checkpoint. It takes the coordenate of the other checkpoint as an input.
