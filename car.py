@@ -1,5 +1,5 @@
 from global_variables import *
-
+from road import *
 
 class Car():
     def __init__(self,x: float,y: float, path: deque) -> None:
@@ -7,16 +7,17 @@ class Car():
         self.X = x
         self.Y = y 
         self.angle = random.uniform(0, 2 * math.pi)
-        self.random = random.randint(1,5)
-        self.sprite = pygame.image.load(f"sprites/car{self.random}.png").convert_alpha()
-        self.sprite = pygame.transform.scale(self.sprite, (self.sprite.get_width() / 4*ZOOM, self.sprite.get_height() / 4*ZOOM))
-        self.rect = self.sprite.get_rect(center=(self.X, self.Y))
-        self.rotated_sprite = pygame.transform.rotate(self.sprite, self.angle)
         self.pos = pygame.Vector2(self.X, self.Y)
         self.acceleration = pygame.Vector2()
         self.velocity = pygame.Vector2()
         self.pathOG = path
         self.path = self.pathOG.copy()
+        self.random = random.randint(1,5)
+        self.sprite = pygame.image.load(f"sprites/car{self.random}.png").convert_alpha()
+        self.sprite = pygame.transform.scale(self.sprite, (self.sprite.get_width() / 4*ZOOM, self.sprite.get_height() / 4*ZOOM))
+        self.rect = self.sprite.get_rect(center=(self.X, self.Y))
+        self.ray = Checkpoint(0, 0).draw_line(self.pos, self.pos + pygame.Vector2(100, 0))
+        self.rotated_sprite = pygame.transform.rotate(self.sprite, self.angle)
 
     def update(self, delta: float) -> None:
 
@@ -45,6 +46,8 @@ class Car():
         self.pos += self.velocity
 
         self.angle = self.velocity.angle_to(pygame.Vector2(1, 0))
+
+        self.ray = Checkpoint(0, 0).draw_line(self.pos, self.pos + pygame.Vector2(100, 0))
 
         self.rotated_sprite = pygame.transform.rotate(self.sprite, self.angle-90)
         self.rect = self.rotated_sprite.get_rect(center=(self.pos.x, self.pos.y))
