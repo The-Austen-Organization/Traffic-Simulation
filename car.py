@@ -1,7 +1,7 @@
 from global_variables import *
 
 class Car():
-    def __init__(self,x: float,y: float, path: deque([Checkpoint])) -> NONE:
+    def __init__(self,x: float,y: float, path: deque([Checkpoint])) -> None:
         # X and Y are constant, they are the starting position.
         self.X = x
         self.Y = y 
@@ -17,7 +17,7 @@ class Car():
         self.pathOG = path
         self.path = self.pathOG.copy()
 
-    def update(self, delta: float) -> NONE:
+    def update(self, delta: float) -> None:
 
         if len(self.path) == 0:
             # The point of this code is that when the car reaches the end of its path, it just resets back to the start.

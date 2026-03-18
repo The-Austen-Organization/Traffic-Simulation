@@ -1,7 +1,7 @@
 from global_variables import *
 
 class Checkpoint():
-    def __init__(self, x: float, y: float) -> NONE:
+    def __init__(self, x: float, y: float) -> None:
         self.x = x;
         self.y = y;
     def distance_from(self, x: float, y: float) -> float:
@@ -21,16 +21,20 @@ class Checkpoint():
         return direction
 
 
-class Road():
-    def __init__(self, points: Checkpoint) -> NONE:
+class Roads():
+    """
+    The road just includes all the checkpoints, so that we can just call Road[x] instead of writing out the entire checkpoint by scrath.
+    """
+    def __init__(self, points: list(Checkpoint)) -> None:
         # Keep this variable private. The __ means its private.
         self.__road = points
     def __getitem__(self, index: int) -> Checkpoint:
         return __road[index]
-
-    def __setitem__(self, index: int, value: Checkpoint) -> NONE:
+    def __setitem__(self, index: int, value: Checkpoint) -> None:
         __road[index] = value
-        
-if __name__ == "__main__":
-    pointA = Checkpoint(5, 5)
-    print(pointA.vector_from(2,  -8))
+    def create_path(self, point: list(int)) -> deque(Checkpoints):
+        """his function is going to take the index of a bunch of the checkpoints, and it will return the deque of all those check points."""
+        path = deque()
+        for i in point:
+            path.append(self.__road[i])
+        return path
