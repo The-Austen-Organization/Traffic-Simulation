@@ -1,14 +1,15 @@
 from global_variables import *
 
+
 class Car():
-    def __init__(self,x: float,y: float, path: deque([Checkpoint])) -> None:
+    def __init__(self,x: float,y: float, path: deque) -> None:
         # X and Y are constant, they are the starting position.
         self.X = x
         self.Y = y 
         self.angle = random.uniform(0, 2 * math.pi)
         self.random = random.randint(1,5)
         self.sprite = pygame.image.load(f"sprites/car{self.random}.png").convert_alpha()
-        self.sprite = pygame.transform.scale(self.sprite, (self.sprite.get_width() / 4, self.sprite.get_height() / 4))
+        self.sprite = pygame.transform.scale(self.sprite, (self.sprite.get_width() / 4*ZOOM, self.sprite.get_height() / 4*ZOOM))
         self.rect = self.sprite.get_rect(center=(self.X, self.Y))
         self.rotated_sprite = pygame.transform.rotate(self.sprite, self.angle)
         self.pos = pygame.Vector2(self.X, self.Y)
@@ -48,3 +49,6 @@ class Car():
         self.rotated_sprite = pygame.transform.rotate(self.sprite, self.angle-90)
         self.rect = self.rotated_sprite.get_rect(center=(self.pos.x, self.pos.y))
         
+    class Ray():
+        def __init__(self):
+            pass
