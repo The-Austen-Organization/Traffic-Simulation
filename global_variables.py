@@ -1,19 +1,11 @@
 import pygame
 import math
 import random
+from collections import deque
 from road import *
 
-class Vector:
-    """
-    This is gonna be our own in house implementation of a vector because I don't wanna learn pygame's.
-    """
-    pass
-
-ACCELERATION = 300
-MAX_SPEED = 250
-FRICTION = 100
-TURN_SPEED = 120
-SPEED = 0
+ACCELERATION = 67
+FRICTION = -6.7
 
 pygame.init()
 pygame.display.set_caption("Simulación del Tráfico")
@@ -30,4 +22,4 @@ def draw_text(surface, text, x, y, color=(255, 255, 255)):
 from car import *
 
 Cars = list()
-Cars.append(Car(600, 350, 20))
+Cars.append(Car(50, 440, deque([Checkpoint(900, 440), Checkpoint(1020, 300), Checkpoint(1020, 120), Checkpoint(900, 40), Checkpoint(725, 30), Checkpoint(600, 180), Checkpoint(600, 400), Checkpoint(600, 700)])))
