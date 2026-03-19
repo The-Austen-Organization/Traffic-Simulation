@@ -154,3 +154,6 @@ class Car():
                     )
                     if pt:
                         pygame.draw.circle(screen, (0, 0, 255), pt, 5)
+
+#The cars recieve each others distance to the bule intersetion points
+#the cars recieve the 
