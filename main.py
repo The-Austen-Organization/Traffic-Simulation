@@ -58,6 +58,7 @@ while running:
     screen.blit(background, (width/2 - background.get_width()/2,height/2 - background.get_height()/2))
     for item in Cars:
         screen.blit(item.rotated_sprite, (item.pos.x - item.rotated_sprite.get_width()/2,item.pos.y - item.rotated_sprite.get_height()/2))
+        item.raycast.render(screen)
         # pygame.draw.rect(screen, (255, 0, 0), (item.x-item.sprite.get_width()/2, item.y-item.sprite.get_height()/2, item.sprite.get_width(), item.sprite.get_height()), 2)
 
     if DEBUGGER:

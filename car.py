@@ -17,6 +17,7 @@ class Car():
         self.sprite = pygame.transform.scale(self.sprite, (self.sprite.get_width() / 4*ZOOM, self.sprite.get_height() / 4*ZOOM))
         self.rect = self.sprite.get_rect(center=(self.X, self.Y))
         self.ray = Checkpoint(0, 0).draw_line(self.pos, self.pos + pygame.Vector2(100, 0))
+        self.raycast = Car.RayCast(self.pos.copy(), pygame.Vector2(0, 0))
         self.rotated_sprite = pygame.transform.rotate(self.sprite, self.angle)
 
     def update(self, delta: float) -> None:
@@ -47,11 +48,34 @@ class Car():
 
         self.angle = self.velocity.angle_to(pygame.Vector2(1, 0))
 
+        self.raycast = Car.RayCast(self.pos.copy(), self.velocity.copy()) 
+
         self.ray = Checkpoint(0, 0).draw_line(self.pos, self.pos + pygame.Vector2(100, 0))
 
         self.rotated_sprite = pygame.transform.rotate(self.sprite, self.angle-90)
         self.rect = self.rotated_sprite.get_rect(center=(self.pos.x, self.pos.y))
-        
-    class Ray():
-        def __init__(self):
+
+    @staticmethod
+    def normalizeAngle(angle):
+        angle = angle % 360
+        if angle < 0:
+            angle += 360
+        return angle
+
+    class RayCast(): # one line straigh in front of th car
+        def __init__(self, cart, velocity):
+            self.cart = cart
+            self.velocity = velocity 
+
+        def cast(self):
             pass
+
+        def render(self, screen):
+            if self.velocity.length() > 0:
+                direction = self.velocity.normalize()
+                endpoint = (
+                    self.cart.x + direction.x * 100,#modify the mult to change the length of the raycast
+                    self.cart.y + direction.y * 100
+                )
+                pygame.draw.line(screen, (0, 255, 0),
+                    (self.cart.x, self.cart.y), endpoint)
