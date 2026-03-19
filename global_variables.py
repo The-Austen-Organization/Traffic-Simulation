@@ -28,8 +28,9 @@ def draw_text(surface, text, x, y, color=(255, 255, 255)):
     debug_surface = font.render(str(text), True, color)
     surface.blit(debug_surface, (x, y))
 
-from car import *
 from road import *
 
 road = Roads([])
 Cars = list()
+
+from car import *
