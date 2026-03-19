@@ -35,8 +35,7 @@ def mouse_col(mouse,obj):
     if obj.rect.collidepoint(mouse):
         if pygame.mouse.get_pressed()[0]:
             Selected_car = obj
-background = pygame.image.load(f"sprites/Earth_000.jpeg").convert_alpha()
-background = pygame.transform.scale(background, (background.get_width() /3.2, background.get_height() /3.2))
+backgroundImage = pygame.image.load(f"sprites/Earth_000.jpeg").convert_alpha()
 running = True
 while running:
     screen.fill((14,154,215))
@@ -54,9 +53,17 @@ while running:
                 G_down = not G_down
             # Baldwin's code after this
             if event.key == pygame.K_EQUALS:
-                pass
-            elif event.key == pygame.K_MINUS:
-                pass
+                zoom *= 1.1
+            if event.key == pygame.K_MINUS:
+                zoom /= 1.1
+            if event.key == pygame.K_UP:
+                offset.y += 50
+            if event.key == pygame.K_DOWN:
+                offset.y -= 50
+            if event.key == pygame.K_LEFT:
+                offset.x += 50
+            if event.key == pygame.K_RIGHT:
+                offset.x -= 50
 
     mouse = pygame.mouse.get_pos()
 
@@ -65,9 +72,9 @@ while running:
     for car in Cars:
         car.update(dt)
         mouse_col(mouse,car)
-
    
-    screen.blit(background, (width/2 - background.get_width()/2,height/2 - background.get_height()/2))
+    background = pygame.transform.scale(backgroundImage, (zoom * width, zoom * height))
+    screen.blit(background, ((width - background.get_width()) / 2 + offset.x, (height - background.get_height()) / 2 + offset.y))
     for item in Cars:
         screen.blit(item.rotated_sprite, (item.pos.x - item.rotated_sprite.get_width()/2,item.pos.y - item.rotated_sprite.get_height()/2))
         item.raycast.render(screen)
@@ -75,15 +82,14 @@ while running:
             pygame.draw.rect(screen, (255, 0, 0), (item.pos.x-item.sprite.get_width()/2, item.pos.y-item.sprite.get_height()/2, item.sprite.get_width(), item.sprite.get_height()), 2)
 
     if DEBUGGER:
-        
         for i in range(len(Cars)):
             initial_pos = (Cars[i].X, Cars[i].Y)
             final_pos = ()
             for j in range(len(Cars[i].pathOG)):
-                final_pos = ((Cars[i].pathOG[j].x,Cars[i].pathOG[j].y))
-                Cars[i].pathOG[j].draw_dot()
-                Cars[i].pathOG[j].draw_line(initial_pos,final_pos)
-                initial_pos = ((Cars[i].pathOG[j].x,Cars[i].pathOG[j].y))
+                final_pos = scale(pygame.Vector2(Cars[i].pathOG[j].x,Cars[i].pathOG[j].y))
+                scale(Cars[i].pathOG[j]).draw_dot()
+                scale(Cars[i].pathOG[j]).draw_line(initial_pos,final_pos)
+                initial_pos = scale(pygame.Vector2(Cars[i].pathOG[j].x,Cars[i].pathOG[j].y))
 
         with open("data.json", "r") as f:
             points = json.load(f)

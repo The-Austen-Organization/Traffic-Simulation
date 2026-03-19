@@ -2,13 +2,15 @@ import pygame
 import math
 import random
 import json
+import copy
 from collections import deque
+from camara import *
+
 ACCELERATION = 67
 FRICTION = -6.7
 DEBUGGER = True
 F_down = False
 G_down = False
-ZOOM = 1
 
 RAYS=1
 
@@ -34,3 +36,5 @@ road = Roads([])
 Cars = list()
 
 from car import *
+
+
