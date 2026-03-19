@@ -7,6 +7,24 @@ def normalizeAngle(angle):
             angle += 360
         return angle
 
+def line_intersection(p1, p2, p3, p4):
+    #Returns the intersection point of line p1-p2 and p3-p4, or None if they don't intersect.
+    x1, y1 = p1; x2, y2 = p2
+    x3, y3 = p3; x4, y4 = p4
+
+    denom = (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4)
+    if denom == 0:
+        return None  
+
+    t = ((x1-x3)*(y3-y4) - (y1-y3)*(x3-x4)) / denom
+    u = -((x1-x2)*(y1-y3) - (y1-y2)*(x1-x3)) / denom
+
+    if 0 <= t <= 1 and 0 <= u <= 1:  # intersection both segments
+        x = x1 + t*(x2-x1)
+        y = y1 + t*(y2-y1)
+        return (int(x), int(y))
+    return None
+
 class Car():
     def __init__(self,x: float,y: float, path_list: deque,road:Roads ) -> None:
         # X and Y are constant, they are the starting position.
@@ -75,7 +93,9 @@ class Car():
             self.velocity = velocity
             self.max_length = max_length
             self.inter_point = None
-            self.ray_length = max_length 
+            self.ray_length = max_length
+            self.ray_start = (cart.x, cart.y)
+            self.ray_end = (cart.x, cart.y)
 
         def cast(self):
             self.inter_point = None
@@ -91,6 +111,9 @@ class Car():
                 self.cart.y + direction.y * self.max_length
             )
 
+            self.ray_start = start
+            self.ray_end = end
+
             for car in Cars:  # use global Cars list directly
                 if car is self.owner:
                     continue
@@ -102,6 +125,11 @@ class Car():
                     if dist < self.ray_length:
                         self.ray_length = dist
                         self.inter_point = inter_point
+
+            self.ray_end = (
+                self.cart.x + direction.x * self.ray_length,
+                self.cart.y + direction.y * self.ray_length
+            )
 
         def render(self, screen):
             if self.velocity.length() > 0:
@@ -115,3 +143,18 @@ class Car():
 
                 if self.inter_point:
                     pygame.draw.circle(screen, (255, 0, 0), self.inter_point, 4)
+
+                for car in Cars:
+                    if car is self.owner:
+                        continue
+                    if car.raycast.velocity.length() == 0:
+                        continue
+                    pt = line_intersection(
+                        self.ray_start, self.ray_end,
+                        car.raycast.ray_start, car.raycast.ray_end
+                    )
+                    if pt:
+                        pygame.draw.circle(screen, (0, 0, 255), pt, 5)
+
+#The cars recieve each others distance to the bule intersetion points
+#the cars recieve the 
