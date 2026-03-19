@@ -25,7 +25,6 @@ Car_coordinates = [
     [225, -100]
 ]
 
-
 for i in range(len(Car_coordinates)):
     Cars.append(Car(Car_coordinates[i][0],Car_coordinates[i][1], order[i],road))
 global Selected_car
@@ -53,17 +52,17 @@ while running:
                 G_down = not G_down
             # Baldwin's code after this
             if event.key == pygame.K_EQUALS:
-                zoom *= 1.1
+                camara.zoom *= 1.1
             if event.key == pygame.K_MINUS:
-                zoom /= 1.1
+                camara.zoom /= 1.1
             if event.key == pygame.K_UP:
-                offset.y += 50
+                camara.offset.y += 50
             if event.key == pygame.K_DOWN:
-                offset.y -= 50
+                camara.offset.y -= 50
             if event.key == pygame.K_LEFT:
-                offset.x += 50
+                camara.offset.x += 50
             if event.key == pygame.K_RIGHT:
-                offset.x -= 50
+                camara.offset.x -= 50
 
     mouse = pygame.mouse.get_pos()
 
@@ -73,8 +72,8 @@ while running:
         car.update(dt)
         mouse_col(mouse,car)
    
-    background = pygame.transform.scale(backgroundImage, (zoom * width, zoom * height))
-    screen.blit(background, ((width - background.get_width()) / 2 + offset.x, (height - background.get_height()) / 2 + offset.y))
+    background = pygame.transform.scale(backgroundImage, (camara.zoom * width, camara.zoom * height))
+    screen.blit(background, (offset.x - background.get_width() / 2, offset.y - background.get_height() / 2))
     for item in Cars:
         screen.blit(item.rotated_sprite, (item.pos.x - item.rotated_sprite.get_width()/2,item.pos.y - item.rotated_sprite.get_height()/2))
         item.raycast.render(screen)
@@ -83,18 +82,18 @@ while running:
 
     if DEBUGGER:
         for i in range(len(Cars)):
-            initial_pos = (Cars[i].X, Cars[i].Y)
+            initial_pos = pygame.Vector2(Cars[i].X, Cars[i].Y)
             final_pos = ()
             for j in range(len(Cars[i].pathOG)):
-                final_pos = scale(pygame.Vector2(Cars[i].pathOG[j].x,Cars[i].pathOG[j].y))
-                scale(Cars[i].pathOG[j]).draw_dot()
+                final_pos = pygame.Vector2(Cars[i].pathOG[j].x, Cars[i].pathOG[j].y)
                 scale(Cars[i].pathOG[j]).draw_line(initial_pos,final_pos)
-                initial_pos = scale(pygame.Vector2(Cars[i].pathOG[j].x,Cars[i].pathOG[j].y))
+                initial_pos = pygame.Vector2(Cars[i].pathOG[j].x,Cars[i].pathOG[j].y)
 
         with open("data.json", "r") as f:
             points = json.load(f)
             for i in range(len(points)):
-                draw_text(screen, i, points[i]["x"], points[i]["y"],WHITE)
+                scale(Checkpoint(points[i]["x"], points[i]["y"])).draw_dot()
+                draw_text(screen, i, points[i]["x"], points[i]["y"], WHITE)
         
 
         if F_down:

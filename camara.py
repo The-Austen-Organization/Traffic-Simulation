@@ -1,6 +1,6 @@
 from global_variables import *
 
-offset = pygame.Vector2(0, 0)
+offset = pygame.Vector2(width / 2, height / 2)
 
 zoom = 1
 
@@ -15,5 +15,6 @@ def scale(point: pygame.Vector2 | Checkpoint) -> pygame.Vector2:
     point.y *= zoom
     point.x += offset.x
     point.y += offset.y
-    print(zoom)
+    point.x += (offset.x - width / 2) * zoom
+    point.y += (offset.y - height / 2) * zoom
     return point
