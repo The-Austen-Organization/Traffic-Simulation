@@ -25,9 +25,18 @@ Car_coordinates = [
     [225, -100]
 ]
 
+
 for i in range(len(Car_coordinates)):
     Cars.append(Car(Car_coordinates[i][0],Car_coordinates[i][1], order[i],road))
-
+global Selected_car
+Selected_car = Cars[0]
+def mouse_col(mouse,obj):
+    global Selected_car
+    if obj.rect.collidepoint(mouse):
+        if pygame.mouse.get_pressed()[0]:
+            Selected_car = obj
+background = pygame.image.load(f"sprites/Earth_000.jpeg").convert_alpha()
+background = pygame.transform.scale(background, (background.get_width() /3.2, background.get_height() /3.2))
 running = True
 while running:
     screen.fill((14,154,215))
@@ -55,16 +64,18 @@ while running:
 
     for car in Cars:
         car.update(dt)
+        mouse_col(mouse,car)
 
-    background = pygame.image.load(f"sprites/road.jpg").convert_alpha()
-    background = pygame.transform.scale(background, (background.get_width() * 1.1, background.get_height() * 1.1))
+   
     screen.blit(background, (width/2 - background.get_width()/2,height/2 - background.get_height()/2))
     for item in Cars:
         screen.blit(item.rotated_sprite, (item.pos.x - item.rotated_sprite.get_width()/2,item.pos.y - item.rotated_sprite.get_height()/2))
         item.raycast.render(screen)
-        # pygame.draw.rect(screen, (255, 0, 0), (item.x-item.sprite.get_width()/2, item.y-item.sprite.get_height()/2, item.sprite.get_width(), item.sprite.get_height()), 2)
+        if item == Selected_car:
+            pygame.draw.rect(screen, (255, 0, 0), (item.pos.x-item.sprite.get_width()/2, item.pos.y-item.sprite.get_height()/2, item.sprite.get_width(), item.sprite.get_height()), 2)
 
     if DEBUGGER:
+        
         for i in range(len(Cars)):
             initial_pos = (Cars[i].X, Cars[i].Y)
             final_pos = ()
@@ -79,7 +90,7 @@ while running:
             for i in range(len(points)):
                 draw_text(screen, i, points[i]["x"], points[i]["y"],WHITE)
         
-        print(Cars[0].path_list)
+
         if F_down:
             F_down = not F_down
             with open("data.json", "r") as f:
@@ -94,6 +105,17 @@ while running:
                         line += ","
                     f.write("\t" + line + "\n")
                 f.write("]")
+            with open("order.json", "r") as g:
+                orders = json.load(g)
+            orders[Cars.index(Selected_car)].append(len(points)-1)
+            with open("order.json", "w") as g:
+                g.write("[\n")
+                for i, row in enumerate(orders):
+                    line = json.dumps(row)
+                    if i < len(orders) - 1:
+                        line += ","
+                    g.write("\t" + line + "\n")
+                g.write("]")
         if G_down:
             G_down = not G_down
             with open("data.json", "r") as f:
@@ -108,10 +130,23 @@ while running:
                         line += ","
                     f.write("\t" + line + "\n")
                 f.write("]")
+            with open("order.json", "r") as g:
+                orders = json.load(g)
+            if orders[Cars.index(Selected_car)]:
+                orders[Cars.index(Selected_car)].pop()
+            with open("order.json", "w") as g:
+                g.write("[\n")
+                for i, row in enumerate(orders):
+                    line = json.dumps(row)
+                    if i < len(orders) - 1:
+                        line += ","
+                    g.write("\t" + line + "\n")
+                g.write("]")
 
 
 
     stats_left = [
+        f"{round(clock.get_fps())}",
         f"ACCELERATION: {ACCELERATION}",
         f"FRICTION: {FRICTION}",
         f"MOUSE X: {mouse[0]}",
