@@ -1,10 +1,13 @@
 import pygame
 import math
 import random
+import json
 from collections import deque
 ACCELERATION = 67
 FRICTION = -6.7
-DEBUGGER = False
+DEBUGGER = True
+F_down = False
+G_down = False
 ZOOM = 1
 
 RAYS=1
