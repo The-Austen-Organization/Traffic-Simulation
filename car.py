@@ -22,6 +22,7 @@ class Car():
         self.acceleration = pygame.Vector2()
         self.velocity = pygame.Vector2()
         self.path_list = path_list
+        self.road = road
         self.pathOG = road.create_path(path_list)
         self.path = self.pathOG.copy()
         self.random = random.randint(1,5)
