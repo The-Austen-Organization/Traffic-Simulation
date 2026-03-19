@@ -27,7 +27,6 @@ class Car():
         self.sprite = pygame.image.load(f"sprites/car{self.random}.png").convert_alpha()
         self.sprite = pygame.transform.scale(self.sprite, (self.sprite.get_width() / 4*ZOOM, self.sprite.get_height() / 4*ZOOM))
         self.rect = self.sprite.get_rect(center=(self.X, self.Y))
-        self.ray = Checkpoint(0, 0).draw_line(self.pos, self.pos + pygame.Vector2(100, 0))
         self.raycast = Car.RayCast(self.pos.copy(), pygame.Vector2(0, 0))
         self.rotated_sprite = pygame.transform.rotate(self.sprite, self.angle)
 
