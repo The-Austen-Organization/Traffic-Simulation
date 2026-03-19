@@ -8,24 +8,25 @@ Code practices:
 
 from global_variables import *
 
-road = Roads([
-    Checkpoint(900, 440), 
-    Checkpoint(1020, 300), 
-    Checkpoint(1020, 120), 
-    Checkpoint(900, 40), 
-    Checkpoint(725, 30), 
-    Checkpoint(600, 180), 
-    Checkpoint(600, 400), 
-    Checkpoint(600, 800), 
-    Checkpoint(-100, 440),
-    Checkpoint(300, -100),
-    Checkpoint(225, 800)
-])
+Roads_list = []
+with open("data.json", "r") as f:
+	points = json.load(f)
 
-Cars.append(Car(-100, 440, road.create_path([0, 1, 2, 3, 4, 5, 6, 7])))
-Cars.append(Car(600, 800, road.create_path([6, 5, 4, 3, 2, 1, 0, 8])))
-Cars.append(Car(300, 800, road.create_path([9])))
-Cars.append(Car(225, -100, road.create_path([10])))
+checkpoints = [Checkpoint(p["x"], p["y"]) for p in points]
+road = Roads(checkpoints)
+
+with open("order.json", "r") as f:
+	order = json.load(f)
+
+Car_coordinates = [
+    [-100, 440],
+    [600, 800],
+    [300, 800],
+    [225, -100]
+]
+
+for i in range(len(Car_coordinates)):
+    Cars.append(Car(Car_coordinates[i][0],Car_coordinates[i][1], order[i],road))
 
 running = True
 while running:
@@ -38,10 +39,12 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_d:
                 DEBUGGER = not DEBUGGER
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                pass
+            elif event.key == pygame.K_f:
+                F_down = not F_down
+            elif event.key == pygame.K_g:
+                G_down = not G_down
             # Baldwin's code after this
-            elif event.key == pygame.K_PLUS:
+            if event.key == pygame.K_PLUS:
                 pass
             elif event.key == pygame.K_MINUS:
                 pass
@@ -70,8 +73,43 @@ while running:
                 Cars[i].pathOG[j].draw_dot()
                 Cars[i].pathOG[j].draw_line(initial_pos,final_pos)
                 initial_pos = ((Cars[i].pathOG[j].x,Cars[i].pathOG[j].y))
-        for i in range(len(road.road)):
-            draw_text(screen, i, road[i].x, road[i].y,WHITE)
+
+        with open("data.json", "r") as f:
+            points = json.load(f)
+            for i in range(len(points)):
+                draw_text(screen, i, points[i]["x"], points[i]["y"],WHITE)
+        
+        print(Cars[0].path_list)
+        if F_down:
+            F_down = not F_down
+            with open("data.json", "r") as f:
+                points = json.load(f)
+                
+            points.append({"x":mouse[0],"y":mouse[1]})
+            with open("data.json", "w") as f:
+                f.write("[\n")
+                for i, p in enumerate(points):
+                    line = json.dumps(p)
+                    if i < len(points) - 1:
+                        line += ","
+                    f.write("\t" + line + "\n")
+                f.write("]")
+        if G_down:
+            G_down = not G_down
+            with open("data.json", "r") as f:
+                points = json.load(f)
+            if points:  # safety check (avoid error if empty)
+                points.pop()
+            with open("data.json", "w") as f:
+                f.write("[\n")
+                for i, p in enumerate(points):
+                    line = json.dumps(p)
+                    if i < len(points) - 1:
+                        line += ","
+                    f.write("\t" + line + "\n")
+                f.write("]")
+
+
 
     stats_left = [
         f"ACCELERATION: {ACCELERATION}",

@@ -8,7 +8,7 @@ def normalizeAngle(angle):
         return angle
 
 class Car():
-    def __init__(self,x: float,y: float, path: deque) -> None:
+    def __init__(self,x: float,y: float, path_list: deque,road:Roads ) -> None:
         # X and Y are constant, they are the starting position.
         self.X = x
         self.Y = y 
@@ -21,7 +21,8 @@ class Car():
         self.pos = pygame.Vector2(self.X, self.Y)
         self.acceleration = pygame.Vector2()
         self.velocity = pygame.Vector2()
-        self.pathOG = path
+        self.path_list = path_list
+        self.pathOG = road.create_path(path_list)
         self.path = self.pathOG.copy()
         self.random = random.randint(1,5)
         self.sprite = pygame.image.load(f"sprites/car{self.random}.png").convert_alpha()
