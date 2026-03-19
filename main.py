@@ -53,7 +53,7 @@ while running:
             elif event.key == pygame.K_g:
                 G_down = not G_down
             # Baldwin's code after this
-            if event.key == pygame.K_PLUS:
+            if event.key == pygame.K_EQUALS:
                 pass
             elif event.key == pygame.K_MINUS:
                 pass

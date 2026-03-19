@@ -1,4 +1,4 @@
 from global_variables import *
 
 class Camara():
-    pass
+    def __init__(self, )
