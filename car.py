@@ -1,6 +1,12 @@
 from global_variables import *
 from road import *
 
+def normalizeAngle(angle):
+        angle = angle % 360
+        if angle < 0:
+            angle += 360
+        return angle
+
 class Car():
     def __init__(self,x: float,y: float, path: deque) -> None:
         # X and Y are constant, they are the starting position.
@@ -54,13 +60,6 @@ class Car():
 
         self.rotated_sprite = pygame.transform.rotate(self.sprite, self.angle-90)
         self.rect = self.rotated_sprite.get_rect(center=(self.pos.x, self.pos.y))
-
-    @staticmethod
-    def normalizeAngle(angle):
-        angle = angle % 360
-        if angle < 0:
-            angle += 360
-        return angle
 
     class RayCast(): # one line straigh in front of th car
         def __init__(self, cart, velocity):
