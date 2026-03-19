@@ -26,7 +26,7 @@ def line_intersection(p1, p2, p3, p4):
     return None
 
 class Car():
-    def __init__(self,x: float,y: float, path_list: deque,road:Roads ) -> None:
+    def __init__(self,x: float,y: float, path_list: list, road: Roads ) -> None:
         # X and Y are constant, they are the starting position.
         self.X = x
         self.Y = y 
