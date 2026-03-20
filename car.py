@@ -132,11 +132,11 @@ class Car():
                     self.cart.x + direction.x * self.ray_length,
                     self.cart.y + direction.y * self.ray_length
                 )
-                pygame.draw.line(screen, (0, 255, 0),
-                    scale(pygame.Vector2(self.cart.x, self.cart.y)), scale(endpoint))
+                # pygame.draw.line(screen, (0, 255, 0),
+                #     scale(pygame.Vector2(self.cart.x, self.cart.y)), scale(endpoint))
 
-                if self.inter_point:
-                    pygame.draw.circle(screen, (255, 0, 0), self.inter_point, 4)
+                # if self.inter_point:
+                #     pygame.draw.circle(screen, (255, 0, 0), self.inter_point, 4)
 
                 for car in Cars:
                     if car is self.owner:

@@ -17,7 +17,7 @@ RAYS=1
 
 RED = [255,20,20]
 WHITE = [210,210,210]
-GREEN = [20,255,20]
+GREEN = [0, 255, 0]
 
 pygame.init()
 pygame.display.set_caption("Simulación del Tráfico")
