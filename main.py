@@ -18,12 +18,9 @@ road = Roads(checkpoints)
 with open("order.json", "r") as f:
 	order = json.load(f)
 
-Car_coordinates = [
-    [-100, 440],
-    [600, 800],
-    [300, 800],
-    [225, -100]
-]
+Car_coordinates = []
+for i in range(len(order)):
+    Car_coordinates.append([points[order[i][0]]["x"]-1,points[order[i][0]]["y"]-1])
 
 
 for i in range(len(Car_coordinates)):
@@ -70,9 +67,10 @@ while running:
     screen.blit(background, (width/2 - background.get_width()/2,height/2 - background.get_height()/2))
     for item in Cars:
         screen.blit(item.rotated_sprite, (item.pos.x - item.rotated_sprite.get_width()/2,item.pos.y - item.rotated_sprite.get_height()/2))
-        item.raycast.render(screen)
-        if item == Selected_car:
-            pygame.draw.rect(screen, (255, 0, 0), (item.pos.x-item.sprite.get_width()/2, item.pos.y-item.sprite.get_height()/2, item.sprite.get_width(), item.sprite.get_height()), 2)
+        if DEBUGGER:
+            item.raycast.render(screen)
+            if item == Selected_car:
+                pygame.draw.rect(screen, (255, 0, 0), (item.pos.x-item.sprite.get_width()/2, item.pos.y-item.sprite.get_height()/2, item.sprite.get_width(), item.sprite.get_height()), 2)
 
     if DEBUGGER:
         
@@ -88,7 +86,7 @@ while running:
         with open("data.json", "r") as f:
             points = json.load(f)
             for i in range(len(points)):
-                draw_text(screen, i, points[i]["x"], points[i]["y"],WHITE)
+                draw_text(screen, i, points[i]["x"], points[i]["y"],GREEN)
         
 
         if F_down:
@@ -96,7 +94,7 @@ while running:
             with open("data.json", "r") as f:
                 points = json.load(f)
                 
-            points.append({"x":mouse[0],"y":mouse[1]})
+            points.append({"x":mouse[0],"y":mouse[1],"n":len(points)})
             with open("data.json", "w") as f:
                 f.write("[\n")
                 for i, p in enumerate(points):
@@ -146,7 +144,8 @@ while running:
 
 
     stats_left = [
-        f"{round(clock.get_fps())}",
+        f"FPS:{round(clock.get_fps())}",
+        f"Number of Cars {len(order)}",
         f"ACCELERATION: {ACCELERATION}",
         f"FRICTION: {FRICTION}",
         f"MOUSE X: {mouse[0]}",

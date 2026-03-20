@@ -20,7 +20,7 @@ class Checkpoint():
 
         return direction
     def draw_dot(self):
-        pygame.draw.circle(screen,RED,(self.x,self.y),30)
+        pygame.draw.circle(screen,RED,(self.x,self.y),DOT_SIZE)
     def draw_line(self,pos1,pos2):
         pygame.draw.line(screen, WHITE, pos1, pos2, 1)
 

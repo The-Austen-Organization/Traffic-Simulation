@@ -82,5 +82,5 @@ class Car():
                     self.cart.x + direction.x * 100,#modify the mult to change the length of the raycast
                     self.cart.y + direction.y * 100
                 )
-                pygame.draw.line(screen, (0, 255, 0),
-                    (self.cart.x, self.cart.y), endpoint)
+            
+                pygame.draw.line(screen, (0, 255, 0),(self.cart.x, self.cart.y), endpoint)
