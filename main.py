@@ -18,12 +18,10 @@ road = Roads(checkpoints)
 with open("order.json", "r") as f:
 	order = json.load(f)
 
-Car_coordinates = [
-    [-100, 440],
-    [600, 800],
-    [300, 800],
-    [225, -100]
-]
+Car_coordinates = []
+for i in range(len(order)):
+    Car_coordinates.append([points[order[i][0]]["x"]-1,points[order[i][0]]["y"]-1])
+
 
 for i in range(len(Car_coordinates)):
     Cars.append(Car(Car_coordinates[i][0],Car_coordinates[i][1], order[i],road))
@@ -35,6 +33,7 @@ def mouse_col(mouse,obj):
         if pygame.mouse.get_pressed()[0]:
             Selected_car = obj
 backgroundImage = pygame.image.load(f"sprites/Earth_000.jpeg").convert_alpha()
+
 running = True
 while running:
     screen.fill((14,154,215))
@@ -75,14 +74,13 @@ while running:
     background = pygame.transform.scale(backgroundImage, (camara.zoom * width, camara.zoom * height))
     screen.blit(background, (offset.x - background.get_width() / 2, offset.y - background.get_height() / 2))
     for item in Cars:
-        screen.blit(pygame.transform.scale(item.rotated_sprite, (item.rotated_sprite.get_width() / 4 * camara.zoom, item.rotated_sprite.get_height() / 4 * camara.zoom)), 
-            scale(item.pos - pygame.Vector2(item.rotated_sprite.get_width(), item.rotated_sprite.get_height()) * camara.zoom / 8)
+        screen.blit(pygame.transform.scale(item.rotated_sprite, (item.rotated_sprite.get_width() / 16 * camara.zoom, item.rotated_sprite.get_height() / 16 * camara.zoom)), 
+            (scale(item.pos) - pygame.Vector2(item.rotated_sprite.get_width(), item.rotated_sprite.get_height()) * camara.zoom / 32)
         )
         item.raycast.render(screen)
         if item == Selected_car and DEBUGGER:
             new_position = scale(pygame.Vector2(item.pos.x, item.pos.y))
-            pygame.draw.circle(screen, GREEN, new_position, 15 * camara.zoom)
-            # pygame.draw.rect(screen, (255, 0, 0), (new_position.x, new_position.y, int(item.sprite.get_width() / 4 * camara.zoom), int(item.sprite.get_height() / 4 * camara.zoom)), 2)
+            pygame.draw.circle(screen, GREEN, new_position, DOT_SIZE / 2 * camara.zoom)
 
     if DEBUGGER:
         for i in range(len(Cars)):
@@ -97,7 +95,7 @@ while running:
             points = json.load(f)
             for i in range(len(points)):
                 Checkpoint(points[i]["x"], points[i]["y"]).draw_dot()
-                draw_text(screen, i, points[i]["x"], points[i]["y"], WHITE)
+                draw_text(screen, i, points[i]["x"], points[i]["y"], GREEN)
         
 
         if F_down:
@@ -105,7 +103,7 @@ while running:
             with open("data.json", "r") as f:
                 points = json.load(f)
                 
-            points.append({"x":mouse[0],"y":mouse[1]})
+            points.append({"x":mouse[0],"y":mouse[1],"n":len(points)})
             with open("data.json", "w") as f:
                 f.write("[\n")
                 for i, p in enumerate(points):
@@ -155,7 +153,8 @@ while running:
 
 
     stats_left = [
-        f"{round(clock.get_fps())}",
+        f"FPS:{round(clock.get_fps())}",
+        f"Number of Cars {len(order)}",
         f"ACCELERATION: {ACCELERATION}",
         f"FRICTION: {FRICTION}",
         f"MOUSE X: {mouse[0]}",

@@ -5,11 +5,15 @@ import json
 import copy
 from collections import deque
 
-ACCELERATION = 67
-FRICTION = -6.7
+ACCELERATION = 20
+FRICTION = -10
 DEBUGGER = True
 F_down = False
 G_down = False
+DOT_SIZE = 5
+ZOOM = 0.3
+
+RAYS=1
 
 RED = [255,20,20]
 WHITE = [210,210,210]
