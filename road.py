@@ -21,7 +21,7 @@ class Checkpoint():
         return direction
     def draw_dot(self):
         pygame.draw.circle(screen, RED, scale(pygame.Vector2(self.x, self.y)), 30 * camara.zoom)
-    def draw_line(self,pos1,pos2):
+    def draw_line(self, pos1 ,pos2 ):
         pygame.draw.line(screen, WHITE, scale(pos1), scale(pos2), 1)
 
 class Roads():
