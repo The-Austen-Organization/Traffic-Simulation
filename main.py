@@ -76,11 +76,13 @@ while running:
     screen.blit(background, (offset.x - background.get_width() / 2, offset.y - background.get_height() / 2))
     for item in Cars:
         screen.blit(pygame.transform.scale(item.rotated_sprite, (item.rotated_sprite.get_width() / 4 * camara.zoom, item.rotated_sprite.get_height() / 4 * camara.zoom)), 
-            scale(pygame.Vector2(item.pos.x - item.rotated_sprite.get_width() / 2, item.pos.y - item.rotated_sprite.get_height() / 2))
+            scale(item.pos - pygame.Vector2(item.rotated_sprite.get_width(), item.rotated_sprite.get_height()) * camara.zoom / 8)
         )
         item.raycast.render(screen)
-        if item == Selected_car:
-            pygame.draw.rect(screen, (255, 0, 0), (item.pos.x-item.sprite.get_width()/2, item.pos.y-item.sprite.get_height()/2, item.sprite.get_width(), item.sprite.get_height()), 2)
+        if item == Selected_car and DEBUGGER:
+            new_position = scale(pygame.Vector2(item.pos.x, item.pos.y))
+            pygame.draw.circle(screen, GREEN, new_position, 15 * camara.zoom)
+            # pygame.draw.rect(screen, (255, 0, 0), (new_position.x, new_position.y, int(item.sprite.get_width() / 4 * camara.zoom), int(item.sprite.get_height() / 4 * camara.zoom)), 2)
 
     if DEBUGGER:
         for i in range(len(Cars)):
