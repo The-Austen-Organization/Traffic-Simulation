@@ -20,9 +20,9 @@ class Checkpoint():
 
         return direction
     def draw_dot(self):
-        pygame.draw.circle(screen,RED,(self.x,self.y),DOT_SIZE)
-    def draw_line(self,pos1,pos2):
-        pygame.draw.line(screen, WHITE, pos1, pos2, 1)
+        pygame.draw.circle(screen, RED, scale(pygame.Vector2(self.x, self.y)), DOT_SIZE * camara.zoom)
+    def draw_line(self, pos1 ,pos2 ):
+        pygame.draw.line(screen, WHITE, scale(pos1), scale(pos2), 1)
 
 class Roads():
     """
@@ -36,7 +36,7 @@ class Roads():
     def __setitem__(self, index: int, value: Checkpoint) -> None:
         self.road[index] = value
     def create_path(self, point: list) -> deque:
-        """his function is going to take the inx of a bunch of the checkpoints, and it will return the deque of all those check points."""
+        """This function is going to take the index of a bunch of the checkpoints, and it will return the deque of all those check points."""
         path = deque()
         for i in point:
             path.append(self.road[i])

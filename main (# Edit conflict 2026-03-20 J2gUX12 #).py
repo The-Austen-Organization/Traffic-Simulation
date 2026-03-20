@@ -18,10 +18,12 @@ road = Roads(checkpoints)
 with open("order.json", "r") as f:
 	order = json.load(f)
 
-Car_coordinates = []
-for i in range(len(order)):
-    Car_coordinates.append([points[order[i][0]]["x"]-1,points[order[i][0]]["y"]-1])
-
+Car_coordinates = [
+    [-100, 440],
+    [600, 800],
+    [300, 800],
+    [225, -100]
+]
 
 for i in range(len(Car_coordinates)):
     Cars.append(Car(Car_coordinates[i][0],Car_coordinates[i][1], order[i],road))
@@ -33,7 +35,6 @@ def mouse_col(mouse,obj):
         if pygame.mouse.get_pressed()[0]:
             Selected_car = obj
 backgroundImage = pygame.image.load(f"sprites/Earth_000.jpeg").convert_alpha()
-
 running = True
 while running:
     screen.fill((14,154,215))
@@ -74,13 +75,10 @@ while running:
     background = pygame.transform.scale(backgroundImage, (camara.zoom * width, camara.zoom * height))
     screen.blit(background, (offset.x - background.get_width() / 2, offset.y - background.get_height() / 2))
     for item in Cars:
-        screen.blit(pygame.transform.scale(item.rotated_sprite, (item.rotated_sprite.get_width() / 4 * camara.zoom, item.rotated_sprite.get_height() / 4 * camara.zoom)), 
-            scale(pygame.Vector2(item.pos.x - item.rotated_sprite.get_width() / 2, item.pos.y - item.rotated_sprite.get_height() / 2))
-        )
-        if DEBUGGER:
-            item.raycast.render(screen)
-            if item == Selected_car:
-                pygame.draw.rect(screen, (255, 0, 0), (item.pos.x-item.sprite.get_width()/2, item.pos.y-item.sprite.get_height()/2, item.sprite.get_width(), item.sprite.get_height()), 2)
+        screen.blit(item.rotated_sprite, scale(pygame.Vector2(camara.zoom * (item.pos.x - item.rotated_sprite.get_width() / 2), camara.zoom(item.pos.y - item.rotated_sprite.get_height() / 2))))
+        item.raycast.render(screen)
+        if item == Selected_car:
+            pygame.draw.rect(screen, (255, 0, 0), (item.pos.x-item.sprite.get_width()/2, item.pos.y-item.sprite.get_height()/2, item.sprite.get_width(), item.sprite.get_height()), 2)
 
     if DEBUGGER:
         for i in range(len(Cars)):
@@ -95,7 +93,7 @@ while running:
             points = json.load(f)
             for i in range(len(points)):
                 Checkpoint(points[i]["x"], points[i]["y"]).draw_dot()
-                draw_text(screen, i, points[i]["x"], points[i]["y"], GREEN)
+                draw_text(screen, i, points[i]["x"], points[i]["y"], WHITE)
         
 
         if F_down:
@@ -103,7 +101,7 @@ while running:
             with open("data.json", "r") as f:
                 points = json.load(f)
                 
-            points.append({"x":mouse[0],"y":mouse[1],"n":len(points)})
+            points.append({"x":mouse[0],"y":mouse[1]})
             with open("data.json", "w") as f:
                 f.write("[\n")
                 for i, p in enumerate(points):
@@ -153,8 +151,7 @@ while running:
 
 
     stats_left = [
-        f"FPS:{round(clock.get_fps())}",
-        f"Number of Cars {len(order)}",
+        f"{round(clock.get_fps())}",
         f"ACCELERATION: {ACCELERATION}",
         f"FRICTION: {FRICTION}",
         f"MOUSE X: {mouse[0]}",

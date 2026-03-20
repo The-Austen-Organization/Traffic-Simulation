@@ -2,7 +2,9 @@ import pygame
 import math
 import random
 import json
+import copy
 from collections import deque
+
 ACCELERATION = 20
 FRICTION = -10
 DEBUGGER = True
@@ -24,14 +26,19 @@ height = 720
 global screen
 screen = pygame.display.set_mode((width, height), pygame.SCALED, vsync=1)
 clock = pygame.time.Clock()
-font = pygame.font.SysFont("Fonts/PressStart2P-Regular.ttf", 30)
 
 def draw_text(surface, text, x, y, color=(255, 255, 255)):
+    font = pygame.font.SysFont("Fonts/PressStart2P-Regular.ttf", int(30 * camara.zoom))
     debug_surface = font.render(str(text), True, color)
-    surface.blit(debug_surface, (x, y))
+    surface.blit(debug_surface, scale(pygame.Vector2(x, y)))
 
-from car import *
+# We need both of these because I have to call camara.zoom because apparently using from camara import * creates a copy of zoom and not zoom itself, so it won't update.
+import camara
+from camara import *
+
 from road import *
 
 road = Roads([])
 Cars = list()
+
+from car import *
