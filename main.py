@@ -74,7 +74,7 @@ while running:
     background = pygame.transform.scale(backgroundImage, (camara.zoom * width, camara.zoom * height))
     screen.blit(background, (offset.x - background.get_width() / 2, offset.y - background.get_height() / 2))
     for item in Cars:
-        screen.blit(pygame.transform.scale(item.rotated_sprite, (item.rotated_sprite.get_width() / 16 * camara.zoom, item.rotated_sprite.get_height() / 16 * camara.zoom)), 
+        screen.blit(pygame.transform.scale(item.rotated_sprite, (item.rotated_sprite.get_width() * camara.zoom / 16, item.rotated_sprite.get_height() * camara.zoom / 16)), 
             (scale(item.pos) - pygame.Vector2(item.rotated_sprite.get_width(), item.rotated_sprite.get_height()) * camara.zoom / 32)
         )
         item.raycast.render(screen)
