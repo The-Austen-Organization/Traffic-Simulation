@@ -18,6 +18,7 @@ RAYS=1
 RED = [255,20,20]
 WHITE = [210,210,210]
 GREEN = [0, 255, 0]
+BLUE = [0, 0, 255]
 
 pygame.init()
 pygame.display.set_caption("Simulación del Tráfico")
@@ -27,10 +28,10 @@ global screen
 screen = pygame.display.set_mode((width, height), pygame.SCALED, vsync=1)
 clock = pygame.time.Clock()
 
-def draw_text(surface, text, x, y, color=(255, 255, 255)):
-    font = pygame.font.SysFont("Fonts/PressStart2P-Regular.ttf", int(30 * camara.zoom))
+def draw_text(surface, text, x, y, color, font_size):
+    font = pygame.font.SysFont("Fonts/PressStart2P-Regular.ttf", font_size)
     debug_surface = font.render(str(text), True, color)
-    surface.blit(debug_surface, scale(pygame.Vector2(x, y)))
+    surface.blit(debug_surface, pygame.Vector2(x, y))
 
 # We need both of these because I have to call camara.zoom because apparently using from camara import * creates a copy of zoom and not zoom itself, so it won't update.
 import camara

@@ -49,23 +49,23 @@ while running:
                 F_down = not F_down
             elif event.key == pygame.K_g:
                 G_down = not G_down
-            # Baldwin's code after this
-            if event.key == pygame.K_EQUALS:
-                camara.zoom *= 1.1
-            if event.key == pygame.K_MINUS:
-                camara.zoom /= 1.1
-            if event.key == pygame.K_UP:
-                camara.offset.y += 50
-            if event.key == pygame.K_DOWN:
-                camara.offset.y -= 50
-            if event.key == pygame.K_LEFT:
-                camara.offset.x += 50
-            if event.key == pygame.K_RIGHT:
-                camara.offset.x -= 50
 
     mouse = pygame.mouse.get_pos()
 
     keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_EQUALS]:
+        camara.zoom *= 1.01
+    if keys[pygame.K_MINUS]:
+        camara.zoom /= 1.01
+    if keys[pygame.K_UP]:
+        camara.offset.y += 5
+    if keys[pygame.K_DOWN]:
+        camara.offset.y -= 5
+    if keys[pygame.K_LEFT]:
+        camara.offset.x += 5
+    if keys[pygame.K_RIGHT]:
+        camara.offset.x -= 5
 
     for car in Cars:
         car.update(dt)
@@ -79,8 +79,7 @@ while running:
         )
         item.raycast.render(screen)
         if item == Selected_car and DEBUGGER:
-            new_position = scale(pygame.Vector2(item.pos.x, item.pos.y))
-            pygame.draw.circle(screen, GREEN, new_position, DOT_SIZE / 2 * camara.zoom)
+            pygame.draw.circle(screen, BLUE, scale(pygame.Vector2(item.pos.x, item.pos.y)), DOT_SIZE * camara.zoom)
 
     if DEBUGGER:
         for i in range(len(Cars)):
@@ -95,7 +94,8 @@ while running:
             points = json.load(f)
             for i in range(len(points)):
                 Checkpoint(points[i]["x"], points[i]["y"]).draw_dot()
-                draw_text(screen, i, points[i]["x"], points[i]["y"], GREEN)
+                new_position = scale(Checkpoint(points[i]["x"], points[i]["y"]))
+                draw_text(screen, i, new_position.x, new_position.y, GREEN, int(30 * camara.zoom))
         
 
         if F_down:
@@ -161,7 +161,7 @@ while running:
         f"MOUSE Y: {mouse[1]}"
     ]
     for i in range(len(stats_left)):
-        draw_text(screen,stats_left[i],10,100+22*i, (255, 240, 237))
+        draw_text(screen,stats_left[i],10,100+22*i, (255, 240, 237), 30)
 
     pygame.display.flip()
 

@@ -152,7 +152,8 @@ class Car():
                         car.raycast.ray_start, car.raycast.ray_end
                     )
                     if pt:
-                        pygame.draw.circle(screen, (0, 0, 255), pt, 5)
+                        # pygame.draw.circle(screen, (0, 0, 255), pt, 5)
+                        pass
 
 #The cars recieve each others distance to the bule intersetion points
 #the cars recieve the 
