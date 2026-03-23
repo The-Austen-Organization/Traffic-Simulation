@@ -24,9 +24,11 @@ for i in range(len(order)):
 
 
 for i in range(len(Car_coordinates)):
-    Cars.append(Car(Car_coordinates[i][0],Car_coordinates[i][1], order[i],road))
+    x, y = Car_coordinates[i]
+    PENDING_CARS.append((x, y, order[i]))
+
 global Selected_car
-Selected_car = Cars[0]
+Selected_car = None
 def mouse_col(mouse,obj):
     global Selected_car
     if obj.rect.collidepoint(mouse):
@@ -67,6 +69,15 @@ while running:
     if keys[pygame.K_RIGHT]:
         camara.offset.x -= 5
 
+    still_pending = []
+    for (x, y, path) in PENDING_CARS:
+        if all(math.hypot(car.X - x, car.Y - y) >= MIN_SPAWN_DISTANCE for car in Cars):
+            Cars.append(Car(x, y, path, road))
+            if Selected_car is None:
+                Selected_car = Cars[0]
+        else:
+            still_pending.append((x, y, path))
+    PENDING_CARS = still_pending
     for car in Cars:
         car.update(dt)
         mouse_col(mouse,car)

@@ -65,8 +65,8 @@ class Car():
             return
 
         direction = current_checkpoint.vector_from(self.pos.x, self.pos.y)
-
-        self.acceleration = ACCELERATION * direction
+        brake = self.raycast.brake_power(min_distance=100, st_distance=20)
+        self.acceleration = ACCELERATION * direction * brake
         self.acceleration += self.velocity * FRICTION
         
         self.velocity += self.acceleration * delta
@@ -154,6 +154,13 @@ class Car():
                     if pt:
                         # pygame.draw.circle(screen, (0, 0, 255), pt, 5)
                         pass
-
-#The cars recieve each others distance to the bule intersetion points
-#the cars recieve the 
+        
+        def brake_power(self, min_distance: float = 100, st_distance: float = 20) -> float:
+            if not self.inter_point:
+                return 1.0
+            if self.ray_length > min_distance:
+                return 1.0
+            if self.ray_length <= st_distance:  
+                return 0.0
+            brake = (self.ray_length - st_distance) / (min_distance - st_distance)
+            return brake ** 2

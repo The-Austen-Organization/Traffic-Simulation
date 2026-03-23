@@ -12,7 +12,9 @@ F_down = False
 G_down = False
 DOT_SIZE = 5
 ZOOM = 0.3
-
+CARS = list()
+PENDING_CARS = list() 
+MIN_SPAWN_DISTANCE = 30
 RAYS=1
 
 RED = [255,20,20]
