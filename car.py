@@ -71,7 +71,7 @@ class Car():
         
         self.velocity += self.acceleration * delta
 
-        self.pos += self.velocity
+        self.pos += self.velocity 
 
         self.angle = self.velocity.angle_to(pygame.Vector2(1, 0))
 
@@ -136,7 +136,7 @@ class Car():
                     self.cart.x + direction.x * self.ray_length,
                     self.cart.y + direction.y * self.ray_length
                 )
-                # pygame.draw.line(screen, (0, 255, 0),
+                #pygame.draw.line(screen, (0, 255, 0),
                 #     scale(pygame.Vector2(self.cart.x, self.cart.y)), scale(endpoint))
 
                 # if self.inter_point:

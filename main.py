@@ -93,6 +93,7 @@ while running:
             pygame.draw.circle(screen, BLUE, scale(pygame.Vector2(item.pos.x, item.pos.y)), DOT_SIZE * camara.zoom)
 
     if DEBUGGER:
+        
         for i in range(len(Cars)):
             initial_pos = pygame.Vector2(Cars[i].X, Cars[i].Y)
             final_pos = ()
@@ -101,12 +102,10 @@ while running:
                 scale(Cars[i].pathOG[j]).draw_line(initial_pos,final_pos)
                 initial_pos = pygame.Vector2(Cars[i].pathOG[j].x,Cars[i].pathOG[j].y)
 
-        with open("data.json", "r") as f:
-            points = json.load(f)
-            for i in range(len(points)):
-                Checkpoint(points[i]["x"], points[i]["y"]).draw_dot()
-                new_position = scale(Checkpoint(points[i]["x"], points[i]["y"]))
-                draw_text(screen, i, new_position.x, new_position.y, GREEN, int(30 * camara.zoom))
+        for i in range(len(points)):
+           pygame.draw.circle(screen, RED, scale(pygame.Vector2(points[i]["x"],points[i]["y"])), DOT_SIZE * camara.zoom)
+           new_position = scale(pygame.Vector2(points[i]["x"], points[i]["y"]))
+           draw_text(screen, i, new_position.x, new_position.y, GREEN, int(30 * camara.zoom))
         
 
         if F_down:
