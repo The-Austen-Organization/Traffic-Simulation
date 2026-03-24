@@ -103,9 +103,9 @@ while running:
                 initial_pos = pygame.Vector2(Cars[i].pathOG[j].x,Cars[i].pathOG[j].y)
 
         for i in range(len(points)):
-           pygame.draw.circle(screen, RED, scale(pygame.Vector2(points[i]["x"],points[i]["y"])), DOT_SIZE * camara.zoom)
-           new_position = scale(pygame.Vector2(points[i]["x"], points[i]["y"]))
-           draw_text(screen, i, new_position.x, new_position.y, GREEN, int(30 * camara.zoom))
+            new_position = scale(pygame.Vector2(points[i]["x"], points[i]["y"]))  # once
+            pygame.draw.circle(screen, RED, new_position, DOT_SIZE * camara.zoom)
+            draw_text(screen, i, new_position.x, new_position.y, GREEN, int(30 * camara.zoom))
         
 
         if F_down:

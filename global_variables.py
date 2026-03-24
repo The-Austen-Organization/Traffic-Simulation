@@ -30,8 +30,12 @@ global screen
 screen = pygame.display.set_mode((width, height), pygame.SCALED, vsync=1)
 clock = pygame.time.Clock()
 
+_font_cache = {}
+
 def draw_text(surface, text, x, y, color, font_size):
-    font = pygame.font.SysFont("Fonts/PressStart2P-Regular.ttf", font_size)
+    if font_size not in _font_cache:
+        _font_cache[font_size] = pygame.font.SysFont("Fonts/PressStart2P-Regular.ttf", font_size)
+    font = _font_cache[font_size]
     debug_surface = font.render(str(text), True, color)
     surface.blit(debug_surface, pygame.Vector2(x, y))
 
