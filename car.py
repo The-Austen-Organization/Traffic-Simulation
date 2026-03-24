@@ -1,4 +1,5 @@
 from global_variables import *
+import global_variables 
 from road import *
 
 def normalizeAngle(angle):
@@ -136,11 +137,11 @@ class Car():
                     self.cart.x + direction.x * self.ray_length,
                     self.cart.y + direction.y * self.ray_length
                 )
-                #pygame.draw.line(screen, (0, 255, 0),
-                #     scale(pygame.Vector2(self.cart.x, self.cart.y)), scale(endpoint))
-
-                # if self.inter_point:
-                #     pygame.draw.circle(screen, (255, 0, 0), self.inter_point, 4)
+                if global_variables.DEBUGGER:
+                    pygame.draw.line(screen, (0, 255, 0),
+                        scale(pygame.Vector2(self.cart.x, self.cart.y)), scale(endpoint))
+                    if self.inter_point:
+                        pygame.draw.circle(screen, (255, 0, 0), scale(pygame.Vector2(*self.inter_point)), 4)
 
                 for car in Cars:
                     if car is self.owner:
@@ -151,9 +152,8 @@ class Car():
                         self.ray_start, self.ray_end,
                         car.raycast.ray_start, car.raycast.ray_end
                     )
-                    if pt:
-                        # pygame.draw.circle(screen, (0, 0, 255), pt, 5)
-                        pass
+                    if pt and global_variables.DEBUGGER:
+                        pygame.draw.circle(screen, (0, 0, 255), scale(pygame.Vector2(*pt)), 5)
         
         def brake_power(self, min_distance: float = 100, st_distance: float = 20) -> float:
             if not self.inter_point:
