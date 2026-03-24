@@ -49,7 +49,7 @@ while running:
             running = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_d:
-                DEBUGGER = not DEBUGGER
+                global_variables.DEBUGGER = not global_variables.DEBUGGER
             elif event.key == pygame.K_f:
                 F_down = not F_down
             elif event.key == pygame.K_g:
@@ -95,7 +95,7 @@ while running:
         if item == Selected_car and DEBUGGER:
             pygame.draw.circle(screen, BLUE, scale(pygame.Vector2(item.pos.x, item.pos.y)), DOT_SIZE * camara.zoom)
 
-    if DEBUGGER:
+    if global_variables.DEBUGGER:
         
         camera_moved = (camara.zoom != prev_zoom or camara.offset != prev_offset)
 

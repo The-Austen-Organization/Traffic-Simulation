@@ -142,7 +142,7 @@ class Car():
                         scale(pygame.Vector2(self.cart.x, self.cart.y)), scale(endpoint))
                     if self.inter_point:
                         pygame.draw.circle(screen, (255, 0, 0), scale(pygame.Vector2(*self.inter_point)), 4)
-
+ 
                 for car in Cars:
                     if car is self.owner:
                         continue
