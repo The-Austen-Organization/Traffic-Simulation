@@ -8,17 +8,24 @@ from collections import deque
 ACCELERATION = 20
 FRICTION = -10
 DEBUGGER = True
+DEBUGX = 30
+DEBUGY = 500
+INFOX = 30
+INFOY = 100
 F_down = False
 G_down = False
-DOT_SIZE = 5
+M_down = True
+Pause = False
+DOT_SIZE = 3
 ZOOM = 0.3
 
 RAYS=1
 
 RED = [255,20,20]
-WHITE = [210,210,210]
+WHITE = [230,230,230]
 GREEN = [0, 255, 0]
 BLUE = [0, 0, 255]
+GREY = [37, 37, 37]
 
 pygame.init()
 pygame.display.set_caption("Simulación del Tráfico")
