@@ -4,7 +4,7 @@ offset = pygame.Vector2(width / 2, height / 2)
 
 zoom = 1
 
-def scale(point: pygame.Vector2 | Checkpoint) -> pygame.Vector2:
+def scale(point: pygame.Vector2 ) -> pygame.Vector2:
     """
     The point of this function is to take in the coordenates of the actual world, and spit out the coordenates of the screen equivalent.
     """
