@@ -157,17 +157,17 @@ while running:
 
     if M_down:
         stats_top = [
-                f"Estadisticas automovilisticas:",
-                f"Aprox 2,096 muertes anualmente",
-                f"Aprox 217 accidentes anualmente",
-                f"Promedio 16,717 lesionadas anualmente",
-                f"70% accidentes correspondientes a motorista",
-                f"99.6% de motoristas NO tienen liscencia",
-                f"13% las victimas son peatones",
-                f"Total accidentes aprox anualmente: 79,205",
-                f"34.6 muertes de cada 100,000",
-                f"Republica Dominicana es el país más",
-                f"peligroso para conducir de las americas"
+                f"Estadísticas automovilísticas:",
+                f"Aproximadamente 2,096 muertes anuales",
+                f"Aproximadamente 217 accidentes anuales",
+                f"Promedio de 16,717 personas lesionadas anualmente",
+                f"El 70% de los accidentes corresponde a motoristas",
+                f"El 99.6% de los motoristas NO tiene licencia",
+                f"El 13% de las víctimas son peatones",
+                f"Total de accidentes anuales aproximado: 79,205",
+                f"34.6 muertes por cada 100,000 habitantes",
+                f"La República Dominicana es el país más",
+                f"peligroso para conducir en las Américas"
         ]
         debug_rect = pygame.Rect(INFOX-10,INFOY-10,465,len(stats_top)*22+20)
             
@@ -181,11 +181,11 @@ while running:
             draw_text(screen,stats_top[i],INFOX,INFOY+22*i, WHITE, 30)
         
         stats_left = [
-                f"Stats:",
+                f"Estadisticas:",
                 f"FPS:{round(clock.get_fps())}",
                 f"Number of Cars {len(order)}",
-                f"ACCELERATION: {ACCELERATION}",
-                f"FRICTION: {FRICTION}",
+                f"Aceleración: {ACCELERATION}",
+                f"Fricción: {FRICTION}",
                 f"MOUSE X: {mouse[0]}",
                 f"MOUSE Y: {mouse[1]}",
                 f"Zoom: {camara.zoom:.2f}"
@@ -205,7 +205,7 @@ while running:
         rect_surf = pygame.Surface((width, height), pygame.SRCALPHA)
         rect_surf.fill((180, 180, 180, 128))
         screen.blit(rect_surf, (0, 0))
-        draw_text(screen,"<Press Space to Unpause>",width/2-200,20,WHITE,40)
+        draw_text(screen,"<Presiona Espacio para Reanudar>",width/2-260,20,WHITE,40)
     pygame.display.flip()
 
 pygame.quit()
