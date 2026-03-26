@@ -157,12 +157,12 @@ while running:
 
     if M_down:
         stats_top = [
-                f"Estadísticas automovilísticas:",
-                f"Aproximadamente 2,096 muertes anuales",
-                f"Aproximadamente 217 accidentes anuales",
-                f"Promedio de 16,717 personas lesionadas anualmente",
+                f"Estadísticas automovilístas:",
+                f"Aproximádamente 2,096 muertes anuales",
+                f"Aproximádamente 217 accidentes anuales",
+                f"Promedio de 16,717 personas lesionadas anuálmente",
                 f"El 70% de los accidentes corresponde a motoristas",
-                f"El 99.6% de los motoristas NO tiene licencia",
+                f"El 99.6% de los motoristas NO tienen licencia",
                 f"El 13% de las víctimas son peatones",
                 f"Total de accidentes anuales aproximado: 79,205",
                 f"34.6 muertes por cada 100,000 habitantes",
