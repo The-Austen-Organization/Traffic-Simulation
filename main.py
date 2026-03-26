@@ -77,19 +77,18 @@ while running:
     if keys[pygame.K_RIGHT]:
         camara.offset.x -= 5
     if not Pause:
-
-    still_pending = []
-    for (x, y, path) in PENDING_CARS:
-        if all(math.hypot(car.X - x, car.Y - y) >= MIN_SPAWN_DISTANCE for car in Cars):
-            Cars.append(Car(x, y, path, road))
-            if Selected_car is None:
-                Selected_car = Cars[0]
-        else:
-            still_pending.append((x, y, path))
-    PENDING_CARS = still_pending
-    for car in Cars:
-        car.update(dt)
-        mouse_col(mouse,car)
+        still_pending = []
+        for (x, y, path) in PENDING_CARS:
+            if all(math.hypot(car.X - x, car.Y - y) >= MIN_SPAWN_DISTANCE for car in Cars):
+                Cars.append(Car(x, y, path, road))
+                if Selected_car is None:
+                    Selected_car = Cars[0]
+            else:
+                still_pending.append((x, y, path))
+        PENDING_CARS = still_pending
+        for car in Cars:
+            car.update(dt)
+            mouse_col(mouse,car)
     
     background = pygame.transform.scale(backgroundImage, (camara.zoom * width, camara.zoom * height))
     screen.blit(background, (offset.x - background.get_width() / 2, offset.y - background.get_height() / 2))
