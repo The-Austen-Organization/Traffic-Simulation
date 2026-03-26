@@ -189,8 +189,8 @@ class Car():
                 if global_variables.DEBUGGER:
                     pygame.draw.line(screen, (0, 255, 0),
                         scale(pygame.Vector2(self.cart.x, self.cart.y)), scale(endpoint))
-                    if self.inter_point:
-                        pygame.draw.circle(screen, (255, 0, 0), scale(pygame.Vector2(*self.inter_point)), 4)
+                    if self.inter_point and DEBUGGER:
+                        pygame.draw.circle(screen, BLUE, scale(pygame.Vector2(*self.inter_point)), 4)
  
                 for car in Cars:
                     if car is self.owner:
