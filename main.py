@@ -83,7 +83,9 @@ while running:
         screen.blit(pygame.transform.scale(item.rotated_sprite, (item.rotated_sprite.get_width() * camara.zoom / 16, item.rotated_sprite.get_height() * camara.zoom / 16)), 
             (scale(item.pos) - pygame.Vector2(item.rotated_sprite.get_width(), item.rotated_sprite.get_height()) * camara.zoom / 32)
         )
-        item.raycast.render(screen)
+        if DEBUGGER:
+            print("gaaa")
+            item.raycast.render(screen)
         if item == Selected_car and DEBUGGER:
             pygame.draw.circle(screen, BLUE, scale(pygame.Vector2(item.pos.x, item.pos.y)), DOT_SIZE * camara.zoom)
 
