@@ -41,7 +41,7 @@ class Car():
         self.X = x
         self.Y = y 
         self.angle = random.uniform(0, 2 * math.pi)
-        self.random = random.randint(1,5)
+        self.random = random.randint(1,6)
         self.sprite = pygame.image.load(f"sprites/car{self.random}.png").convert_alpha()
         self.sprite = pygame.transform.scale(self.sprite, (self.sprite.get_width(), self.sprite.get_height()))
         self.rect = self.sprite.get_rect(center=(self.X, self.Y))
