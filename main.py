@@ -24,9 +24,14 @@ for i in range(len(order)):
 
 
 for i in range(len(Car_coordinates)):
-    Cars.append(Car(Car_coordinates[i][0],Car_coordinates[i][1], order[i],road))
+    x, y = Car_coordinates[i]
+    PENDING_CARS.append((x, y, order[i]))
+
 global Selected_car
-Selected_car = Cars[0]
+Selected_car = None
+prev_zoom = camara.zoom
+prev_offset = camara.offset.copy()
+debug_surface = None
 def mouse_col(mouse,obj):
     global Selected_car
     if obj.rect.collidepoint(mouse):
@@ -37,14 +42,14 @@ backgroundImage = pygame.image.load(f"sprites/Earth_000.jpeg").convert_alpha()
 running = True
 while running:
     screen.fill((14,154,215))
-    dt = clock.tick(60) / 1024  # delta time
+    dt = clock.tick(144) / 1024  # delta time
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_d:
-                DEBUGGER = not DEBUGGER
+                global_variables.DEBUGGER = not global_variables.DEBUGGER
             elif event.key == pygame.K_f:
                 F_down = not F_down
             elif event.key == pygame.K_g:
@@ -72,7 +77,15 @@ while running:
     if keys[pygame.K_RIGHT]:
         camara.offset.x -= 5
     if not Pause:
-
+        still_pending = []
+        for (x, y, path) in PENDING_CARS:
+            if all(math.hypot(car.X - x, car.Y - y) >= MIN_SPAWN_DISTANCE for car in Cars):
+                Cars.append(Car(x, y, path, road))
+                if Selected_car is None:
+                    Selected_car = Cars[0]
+            else:
+                still_pending.append((x, y, path))
+        PENDING_CARS = still_pending
         for car in Cars:
             car.update(dt)
             mouse_col(mouse,car)
@@ -87,20 +100,28 @@ while running:
         if item == Selected_car and DEBUGGER:
             pygame.draw.circle(screen, BLUE, scale(pygame.Vector2(item.pos.x, item.pos.y)), DOT_SIZE * camara.zoom)
 
-    if DEBUGGER:
-        for i in range(len(Cars)):
-            initial_pos = pygame.Vector2(Cars[i].X, Cars[i].Y)
-            final_pos = ()
-            for j in range(len(Cars[i].pathOG)):
-                final_pos = pygame.Vector2(Cars[i].pathOG[j].x, Cars[i].pathOG[j].y)
-                scale(Cars[i].pathOG[j]).draw_line(initial_pos,final_pos)
-                initial_pos = pygame.Vector2(Cars[i].pathOG[j].x,Cars[i].pathOG[j].y)
-
+    if global_variables.DEBUGGER:
         
-        for i in range(len(points)):
-            pygame.draw.circle(screen, RED, scale(pygame.Vector2(points[i]["x"], points[i]["y"])), DOT_SIZE * camara.zoom)
-            new_position = scale(pygame.Vector2(points[i]["x"], points[i]["y"]))
-            draw_text(screen, i, new_position.x, new_position.y, GREEN, int(30 * camara.zoom))
+        camera_moved = (camara.zoom != prev_zoom or camara.offset != prev_offset)
+
+        if debug_surface is None or camera_moved:
+            debug_surface = pygame.Surface((width, height), pygame.SRCALPHA)
+            for i in range(len(Cars)):
+                initial_pos = pygame.Vector2(Cars[i].X, Cars[i].Y)
+                for j in range(len(Cars[i].pathOG)):
+                    final_pos = pygame.Vector2(Cars[i].pathOG[j].x, Cars[i].pathOG[j].y)
+                    pygame.draw.line(debug_surface, WHITE, scale(initial_pos), scale(final_pos), 1)
+                    initial_pos = final_pos
+
+            for i in range(len(points)):
+                pos = scale(pygame.Vector2(points[i]["x"], points[i]["y"]))
+                pygame.draw.circle(debug_surface, RED, pos, DOT_SIZE * camara.zoom)
+                draw_text(debug_surface, i, pos.x, pos.y, GREEN, int(30 * camara.zoom))
+
+            prev_zoom = camara.zoom
+            prev_offset = camara.offset.copy()
+
+        screen.blit(debug_surface, (0, 0))
         
 
         if F_down:
