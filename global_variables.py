@@ -5,16 +5,16 @@ import json
 import copy
 from collections import deque
 
-ACCELERATION = 20
-FRICTION = -10
-DEBUGGER = True
+ACCELERATION = 18
+FRICTION = -7.67
+DEBUGGER = False
 DEBUGX = 30
 DEBUGY = 500
 INFOX = 30
 INFOY = 100
 F_down = False
 G_down = False
-M_down = True
+M_down = False
 Pause = False
 DOT_SIZE = 3
 ZOOM = 0.3
@@ -22,6 +22,11 @@ CARS = list()
 PENDING_CARS = list() 
 MIN_SPAWN_DISTANCE = 30
 RAYS=1
+
+car_crash_count = 0
+
+speed_sum = 0
+speed_amount = 0
 
 RED = [255,20,20]
 WHITE = [230,230,230]

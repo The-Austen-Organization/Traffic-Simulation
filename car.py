@@ -43,7 +43,7 @@ class Car():
         self.X = x
         self.Y = y 
         self.angle = random.uniform(0, 2 * math.pi)
-        self.random = random.randint(1,9)
+        self.random = random.randint(1,8)
         self.sprite = pygame.image.load(f"sprites/car{self.random}.png").convert_alpha()
         self.sprite = pygame.transform.scale(self.sprite, (self.sprite.get_width(), self.sprite.get_height()))
         self.rect = self.sprite.get_rect(center=(self.X, self.Y))
@@ -78,9 +78,10 @@ class Car():
         current_checkpoint = self.path[0]
 
         if self.rect.collidepoint(current_checkpoint.x, current_checkpoint.y):
+            self.rect = self.sprite.get_rect(center=(self.pos.x + math.cos(math.radians(180-self.angles2)), self.pos.y+ math.sin(math.radians(180-self.angles2))))
+            self.rect = self.rect.scale_by(1 / 16)
             
-            self.reset()
-
+            self.path.popleft()
         
 
         direction = current_checkpoint.vector_from(self)
@@ -124,7 +125,10 @@ class Car():
         self.rect = self.sprite.get_rect(center=(self.pos.x + math.cos(math.radians(180-self.angles2)), self.pos.y+ math.sin(math.radians(180-self.angles2))))
         self.rect = self.rect.scale_by(1 / 16)
         
-        self.path.popleft()
+        self.path = self.pathOG.copy()
+        self.pos = pygame.Vector2(self.X-1, self.Y-1)
+        self.velocity = pygame.Vector2(0, 0)
+        self.acceleration = pygame.Vector2(0, 0)
         return
     class RayCast(): # one line straight in front of the car
         def __init__(self, owner, cart, velocity, max_length=100):

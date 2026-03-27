@@ -1,1 +1,5 @@
- = scale(pygame.Vector2
+t_alpha()
+# Cars[0].sprite = pygame.transform.scale(Cars[0].sprite, (Cars[0].sprite.get_width(), Cars[0].sprite.get_height()))
+# Cars[0].rect = Cars[0].sprite.get_rect(center=(Cars[0].X, Cars[0].Y))
+# Cars[0].rect = Cars[0].rect.scale_by(1 / 16)
+# Cars[0].rotated_sprite = pygame.transform.rotate(Cars[0].sprite, Cars[0].angle)

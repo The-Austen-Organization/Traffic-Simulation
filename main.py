@@ -35,8 +35,23 @@ for i in range(len(order_list)):
 
 
 
+
+
 for i in range(len(Car_coordinates)):
     Cars.append(Car(Car_coordinates[i][0] + math.cos(math.radians(180-angles[i])) * 16*i,Car_coordinates[i][1] + math.sin(math.radians(180-angles[i])) * 16*i,order[i],road,angles[i]))
+
+# Cars[0].sprite = pygame.image.load(f"sprites/car10.png").convert_alpha()
+# Cars[0].sprite = pygame.transform.scale(Cars[0].sprite, (Cars[0].sprite.get_width(), Cars[0].sprite.get_height()))
+# Cars[0].rect = Cars[0].sprite.get_rect(center=(Cars[0].X, Cars[0].Y))
+# Cars[0].rect = Cars[0].rect.scale_by(1 / 16)
+# Cars[0].rotated_sprite = pygame.transform.rotate(Cars[0].sprite, Cars[0].angle)
+
+# Cars[3].sprite = pygame.image.load(f"sprites/car10.png").convert_alpha()
+# Cars[3].sprite = pygame.transform.scale(Cars[3].sprite, (Cars[3].sprite.get_width(), Cars[3].sprite.get_height()))
+# Cars[3].rect = Cars[3].sprite.get_rect(center=(Cars[3].X, Cars[3].Y))
+# Cars[3].rect = Cars[3].rect.scale_by(1 / 16)
+# Cars[3].rotated_sprite = pygame.transform.rotate(Cars[3].sprite, Cars[3].angle)
+
 global Selected_car
 Selected_car = Cars[0]
 def mouse_col(mouse,obj):
@@ -50,11 +65,13 @@ running = True
 while running:
     
     screen.fill((14,154,215))
-    dt = clock.tick(60) / 1024  # delta time
+    dt = clock.tick(75) / 1024  # delta time
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            print("Crash Count: ", global_variables.car_crash_count)
+            print("Avg Speed: ", global_variables.speed_sum / global_variables.speed_amount)
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_d:
                 DEBUGGER = not DEBUGGER
@@ -91,6 +108,8 @@ while running:
             car.update(dt)
             mouse_col(mouse,car)
         for i in range(len(Cars)):
+            global_variables.speed_sum += Cars[i].velocity.magnitude()
+            global_variables.speed_amount += 1
             for j in range(i + 1, len(Cars)):
                 if Cars[i].rect.colliderect(Cars[j].rect):
     
@@ -104,6 +123,8 @@ while running:
 
                     Cars[i].reset()
                     Cars[j].reset()
+
+                    global_variables.car_crash_count += 1
 
                 #Cars[i].rect.col(Cars[j])
     
