@@ -9,14 +9,17 @@ class Checkpoint():
         This finds the eucledian distance between any point and this checkpoint. It takes the coordenate of the other checkpoint as an input.
         """
         return ( (self.x - x)**2 + (self.y - y)**2 )**0.5
-    def vector_from(self, x: float, y: float) -> pygame.Vector2:
+    def vector_from(self, obj) -> pygame.Vector2:
         """
         The point of this function is to return a normalized 2D vector pointing at this check point from the perspective of the car.
         """
         direction = pygame.Vector2()
-        direction.x = self.x - x
-        direction.y = self.y - y
-        direction = direction.normalize()
+        direction.x = self.x - obj.pos.x
+        direction.y = self.y - obj.pos.y
+        try:
+            direction = direction.normalize()
+        except  Exception as e:
+            print(f"An error occurred: {e}")
 
         return direction
     def draw_dot(self):

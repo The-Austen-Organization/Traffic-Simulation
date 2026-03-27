@@ -5,6 +5,7 @@ Code practices:
 - A positive x direction points towards the right direction, while a positive y direction indicates downward.
 - Full caps to represent constant values.
 """
+Temp_size = 4
 
 from global_variables import *
 
@@ -19,12 +20,23 @@ with open("order.json", "r") as f:
 	order = json.load(f)
 
 Car_coordinates = []
+#grabs first 2 points to calculate y=mx+b
+order_list = []
+angles = []
 for i in range(len(order)):
     Car_coordinates.append([points[order[i][0]]["x"]-1,points[order[i][0]]["y"]-1])
+    order_list.append([order[i][0],order[i][1]])
+for i in range(len(order_list)):
+    v1 = pygame.math.Vector2(points[order[i][0]]["x"],points[order[i][0]]["y"])
+    v2 = pygame.math.Vector2(points[order[i][1]]["x"],points[order[i][1]]["y"])
+    result = (v2-v1)
+    angles.append(result.angle_to(pygame.math.Vector2(1,0)))
+    # self.angle = self.velocity.angle_to(pygame.Vector2(1, 0))
+
 
 
 for i in range(len(Car_coordinates)):
-    Cars.append(Car(Car_coordinates[i][0],Car_coordinates[i][1], order[i],road))
+    Cars.append(Car(Car_coordinates[i][0] + math.cos(math.radians(180-angles[i])) * 16*i,Car_coordinates[i][1] + math.sin(math.radians(180-angles[i])) * 16*i,order[i],road,angles[i]))
 global Selected_car
 Selected_car = Cars[0]
 def mouse_col(mouse,obj):
@@ -36,9 +48,10 @@ backgroundImage = pygame.image.load(f"sprites/Earth_000.jpeg").convert_alpha()
 
 running = True
 while running:
+    
     screen.fill((14,154,215))
     dt = clock.tick(60) / 1024  # delta time
-
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -53,6 +66,8 @@ while running:
                 M_down = not M_down
             elif event.key == pygame.K_SPACE:
                 Pause = not Pause
+                if not Pause:
+                    M_down = True
 
 
     mouse = pygame.mouse.get_pos()
@@ -72,19 +87,35 @@ while running:
     if keys[pygame.K_RIGHT]:
         camara.offset.x -= 5
     if not Pause:
-
         for car in Cars:
             car.update(dt)
             mouse_col(mouse,car)
+        for i in range(len(Cars)):
+            for j in range(i + 1, len(Cars)):
+                if Cars[i].rect.colliderect(Cars[j].rect):
+    
+                    
+                    Cars[i].crash = True
+                    Cars[i].crash_x = Cars[i].pos.x
+                    Cars[i].crash_y = Cars[i].pos.y
+                    Cars[j].crash = True
+                    Cars[j].crash_x = Cars[j].pos.x
+                    Cars[j].crash_y = Cars[j].pos.y
+
+                    Cars[i].reset()
+                    Cars[j].reset()
+
+                #Cars[i].rect.col(Cars[j])
     
     background = pygame.transform.scale(backgroundImage, (camara.zoom * width, camara.zoom * height))
     screen.blit(background, (offset.x - background.get_width() / 2, offset.y - background.get_height() / 2))
     for item in Cars:
-        screen.blit(pygame.transform.scale(item.rotated_sprite, (item.rotated_sprite.get_width() * camara.zoom / 16, item.rotated_sprite.get_height() * camara.zoom / 16)), 
+        screen.blit(pygame.transform.scale(item.rotated_sprite, (item.rotated_sprite.get_width() * Temp_size *camara.zoom / 16 , item.rotated_sprite.get_height() * Temp_size* camara.zoom / 16)), 
             (scale(item.pos) - pygame.Vector2(item.rotated_sprite.get_width(), item.rotated_sprite.get_height()) * camara.zoom / 32)
         )
+        if item.crash:
+            item.crashable()
         if DEBUGGER:
-            print("gaaa")
             item.raycast.render(screen)
         if item == Selected_car and DEBUGGER:
             pygame.draw.circle(screen, BLUE, scale(pygame.Vector2(item.pos.x, item.pos.y)), DOT_SIZE * camara.zoom)
@@ -180,7 +211,7 @@ while running:
 
         pygame.draw.rect(screen, (BLUE),debug_rect)
         for i in range(len(stats_top)):
-            draw_text(screen,stats_top[i],INFOX,INFOY+22*i, WHITE, 30)
+            draw_text(screen,stats_top[i],INFOX,INFOY+22*i, WHITE, 26)
         
         stats_left = [
                 f"Estadisticas:",
@@ -201,13 +232,14 @@ while running:
 
         pygame.draw.rect(screen, (GREY),debug_rect)
         for i in range(len(stats_left)):
-            draw_text(screen,stats_left[i],DEBUGX,DEBUGY+22*i, WHITE, 30)
+            draw_text(screen,stats_left[i],DEBUGX,DEBUGY+22*i, WHITE, 26)
     if Pause:
         M_down = False
         rect_surf = pygame.Surface((width, height), pygame.SRCALPHA)
         rect_surf.fill((180, 180, 180, 128))
         screen.blit(rect_surf, (0, 0))
         draw_text(screen,"<Presiona Espacio para Reanudar>",width/2-260,20,WHITE,40)
+       
     pygame.display.flip()
 
 pygame.quit()

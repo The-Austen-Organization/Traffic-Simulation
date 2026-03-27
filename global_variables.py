@@ -37,6 +37,9 @@ global screen
 screen = pygame.display.set_mode((width, height), pygame.SCALED, vsync=1)
 clock = pygame.time.Clock()
 
+crash_sprite = pygame.image.load(f"sprites/explosion.png").convert_alpha()
+crash_sprite = pygame.transform.scale(crash_sprite, (crash_sprite.get_width()/4, crash_sprite.get_height()/4))
+
 _font_cache = {}
 
 def draw_text(surface, text, x, y, color, font_size):
@@ -53,6 +56,7 @@ from camara import *
 from road import *
 
 road = Roads([])
+global Cars
 Cars = list()
 
 from car import *

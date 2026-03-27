@@ -35,13 +35,15 @@ def line_intersection(p1, p2, p3, p4):
         return (int(x), int(y))
     return None
 
+
+
 class Car():
-    def __init__(self,x: float,y: float, path_list: list, road: Roads ) -> None:
+    def __init__(self,x: float,y: float, path_list: list, road: Roads, angles ) -> None:
         # X and Y are constant, they are the starting position.
         self.X = x
         self.Y = y 
         self.angle = random.uniform(0, 2 * math.pi)
-        self.random = random.randint(1,6)
+        self.random = random.randint(1,9)
         self.sprite = pygame.image.load(f"sprites/car{self.random}.png").convert_alpha()
         self.sprite = pygame.transform.scale(self.sprite, (self.sprite.get_width(), self.sprite.get_height()))
         self.rect = self.sprite.get_rect(center=(self.X, self.Y))
@@ -56,13 +58,19 @@ class Car():
         self.pathOG = road.create_path(path_list)
         self.path = self.pathOG.copy()
         self.raycast = Car.RayCast(self, self.pos.copy(), pygame.Vector2(0, 0))
+        self.angles2 = angles
+        self.crash = False
+        self.crash_x = self.pos.x
+        self.crash_y = self.pos.y
+        self.count = 0
 
     def update(self, delta: float) -> None:
-
+   
+        self.count += 1
         if len(self.path) == 0:
             # The point of this code is that when the car reaches the end of its path, it just resets back to the start.
             self.path = self.pathOG.copy()
-            self.pos = pygame.Vector2(self.X, self.Y)
+            self.pos = pygame.Vector2(self.X-1, self.Y-1)
             self.velocity = pygame.Vector2(0, 0)
             self.acceleration = pygame.Vector2(0, 0)
             return
@@ -70,12 +78,12 @@ class Car():
         current_checkpoint = self.path[0]
 
         if self.rect.collidepoint(current_checkpoint.x, current_checkpoint.y):
-            self.rect = self.sprite.get_rect(center=(self.pos.x, self.pos.y))
-            self.rect = self.rect.scale_by(1 / 16)
-            self.path.popleft()
-            return
+            
+            self.reset()
 
-        direction = current_checkpoint.vector_from(self.pos.x, self.pos.y)
+        
+
+        direction = current_checkpoint.vector_from(self)
         brake = self.raycast.brake_power(self.profile)
         self.acceleration = ACCELERATION * direction * brake
         self.acceleration += self.velocity * FRICTION
@@ -95,8 +103,31 @@ class Car():
         self.rect = self.rotated_sprite.get_rect(center=self.pos)
         self.rect = self.rect.scale_by(1 / 16)
 
+
+    def crashable(self):
+        #self.path = self.pathOG.copy()
+        #self.path.popleft()
+        thing = scale(pygame.Vector2(self.crash_x-crash_sprite.get_width()/2,self.crash_y-crash_sprite.get_height()/2))
+        # scale(item.pos) - pygame.Vector2(item.rotated_sprite.get_width(), item.rotated_sprite.get_height()) * camara.zoom / 32
+
+        screen.blit(crash_sprite, (thing.x,thing.y))
+ 
+        if self.count > 240:
+            self.count = 0
+            self.crash = False
+
+        
+
+        # Reset the sprite back to the original car one.
+      
+    def reset(self):
+        self.rect = self.sprite.get_rect(center=(self.pos.x + math.cos(math.radians(180-self.angles2)), self.pos.y+ math.sin(math.radians(180-self.angles2))))
+        self.rect = self.rect.scale_by(1 / 16)
+        
+        self.path.popleft()
+        return
     class RayCast(): # one line straight in front of the car
-        def __init__(self, owner, cart, velocity, max_length=500):
+        def __init__(self, owner, cart, velocity, max_length=100):
             self.owner = owner        
             self.cart = cart          
             self.velocity = velocity
